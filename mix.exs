@@ -1,13 +1,35 @@
 defmodule Exhcl.Mixfile do
   use Mix.Project
 
+  @version "0.2.0"
+
   def project do
     [app: :exhcl,
-     version: "0.0.1",
+     version: @version,
      elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps,
+
+     # Hex
+     description: description,
+     package: package,
+
+     # Docs
+     name: "ExHCL",
+     docs: [source_ref: "v#{@version}", main: "Exhcl",
+            source_url: "https://github.com/asakura/exhcl"]]
+  end
+
+  defp description do
+    "Configuration language inspired by HCL"
+  end
+
+  defp package do
+    [maintainers: ["Nikolai Sevostjanov"],
+     licenses: ["The MIT License"],
+     links: %{"GitHub" => "https://github.com/asakura/exhcl"},
+     files: ~w(mix.exs README.md lib src)]
   end
 
   # Configuration for the OTP application
@@ -27,6 +49,8 @@ defmodule Exhcl.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:ex_doc, "~> 0.10", only: :docs},
+     {:earmark, "~> 0.1", only: :docs},
+     {:inch_ex, only: :docs}]
   end
 end

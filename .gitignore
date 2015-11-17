@@ -5,3 +5,4 @@ erl_crash.dump
 *.ez
 src/exhcl_parser.erl
 src/exhcl_lexer.erl
+/docs/
