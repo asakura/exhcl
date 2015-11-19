@@ -5,6 +5,18 @@
 
 Configuration language inspired by HCL
 
+```elixir
+Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false] [dtrace]
+
+Interactive Elixir (1.1.1) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> content = """
+...(1)> database pg1 { username = "testuser", password = "password" }
+...(1)> """
+"database pg1 { username = \"testuser\", password = \"password\" }\n"
+iex(2)> Exhcl.Parser.parse(content)
+{:ok, %{database: %{pg1: %{password: "password", username: "testuser"}}}}
+```
+
 ## An example
 
 ```hcl
@@ -33,16 +45,16 @@ telemetry {
 }
 ```
 
-It will be converted to follow elixir representation:
+It will be converted to follow Elixir representation:
 
 ```elixir
 %{deamon: true,
-  backend: %{
-    "consul" => %{address: "127.0.0.1:8500", path: "vault"}},
-  listener: %{
-    "tcp" => %{address: "127.0.0.1:8200", tls_disable: 1}},
-  telemetry: %{
-    disable_hostname: true, statsite_address: "127.0.0.1:8125"}}
+  backend: %{"consul" => %{address: "127.0.0.1:8500",
+                           path: "vault"}},
+  listener: %{"tcp" => %{address: "127.0.0.1:8200",
+                         tls_disable: 1}},
+  telemetry: %{disable_hostname: true,
+               statsite_address: "127.0.0.1:8125"}}
 ```
 
 ## Syntax

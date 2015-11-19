@@ -2,8 +2,6 @@ defmodule ExhclTest do
   use ExUnit.Case
   import Exhcl.Parser
 
-  doctest Exhcl
-
   test "lexer" do
     assert {:ok, [], _} = :exhcl_lexer.string('')
     assert {:ok, ["[": 1, "]": 1], _} = :exhcl_lexer.string('[]')
@@ -148,7 +146,6 @@ defmodule ExhclTest do
   end
 
   test "parser" do
-    assert {:ok, %{}} = parse()
     assert {:ok, %{}} = parse("")
 
     assert {:ok, %{a: [1, 2], b: %{b: 3}}} = parse("a = [1, 2], b {b = 3}")
@@ -163,6 +160,25 @@ defmodule ExhclTest do
     assert {:ok, %{test: %{"aa" => %{a: 1, b: 2, y: %{x: %{a: 2}}}}}} = parse("test \"aa\" {a = 1 \n b = 2 \n y x { a = 2} }")
     assert {:ok, %{test: %{"aa" => %{a: 1, b: 2}}}} = parse("test \"aa\" {a = 1, b = 2}")
     assert {:ok, %{test: %{"aa" => %{a: 1, b: 2}}}} = parse("test \"aa\" {a = 1, \n b = 2}")
+  end
+
+  test "parser!" do
+    assert %{} = parse!("")
+
+    assert %{a: [1, 2], b: %{b: 3}} = parse!("a = [1, 2], b {b = 3}")
+    assert %{a: [1, 2, %{b: 3}]} = parse!("a = [1, 2, {b = 3}]")
+
+    assert_raise RuntimeError, "syntax error before: , at line 1", fn ->
+      parse!("a")
+    end
+
+    assert_raise RuntimeError, "syntax error before: , at line 1", fn ->
+      parse!("a = [1, 2, b {b = 3}")
+    end
+
+    assert_raise RuntimeError, "syntax error before: '=', at line 1", fn ->
+      parse!("a = [1, 2, b = 3}]")
+    end
   end
 
   test "parse: root object (atom, integers)" do

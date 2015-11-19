@@ -1,7 +1,7 @@
 defmodule Exhcl.Mixfile do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.2.1"
 
   def project do
     [app: :exhcl,
@@ -17,7 +17,8 @@ defmodule Exhcl.Mixfile do
 
      # Docs
      name: "ExHCL",
-     docs: [source_ref: "v#{@version}", main: "Exhcl",
+     docs: [extras: ["README.md", "CHANGELOG.md"],
+            source_ref: "v#{@version}", main: "Exhcl",
             source_url: "https://github.com/asakura/exhcl"]]
   end
 
